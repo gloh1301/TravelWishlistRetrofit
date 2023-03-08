@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 
 const val TAG = "PLACES_VIEW_MODEL"
 class PlacesViewModel: ViewModel() {
-    private val places = mutableListOf<Place>(Place("Aukland, NZ"), Place("Patagonia, Chile"))
+    private val places = mutableListOf<Place>(Place("Aukland, NZ", "See where they filmed Lord of the rings"),
+        Place("Patagonia, Chile", "Whale watch"))
 
     fun getPlaces(): List<Place> {
         return places
@@ -13,6 +14,19 @@ class PlacesViewModel: ViewModel() {
 
     fun addNewPlace(place: Place, position: Int? = null): Int {
         if (places.any { placeName -> placeName.name.uppercase() == place.name.uppercase() }) {
+            return -1
+        }
+        return if (position == null) {
+            places.add(place)
+            return places.lastIndex
+        } else {
+            places.add(position, place)
+            return position
+        }
+    }
+
+    fun addNewReason(place: Place, position: Int? = null): Int {
+        if (places.any { placeReason -> placeReason.reason.uppercase() == place.reason.uppercase() }) {
             return -1
         }
         return if (position == null) {

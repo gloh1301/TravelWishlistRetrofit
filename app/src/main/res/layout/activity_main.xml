@@ -18,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/travel_background" />
+        app:srcCompat="@drawable/travel_background"
+        android:contentDescription="@string/image_content_description" />
 
     <EditText
         android:id="@+id/new_place_name"
@@ -33,7 +34,8 @@
         android:padding="@dimen/small_spacing"
         app:layout_constraintEnd_toStartOf="@+id/add_new_place_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/add_new_place_button"
@@ -47,6 +49,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/new_place_name" />
 
+    <EditText
+        android:id="@+id/new_reason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_spacing"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/reason_to_visit"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="@dimen/small_spacing"
+        app:layout_constraintTop_toBottomOf="@id/new_place_name"
+        app:layout_constraintBottom_toTopOf="@id/place_list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:importantForAutofill="no" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/place_list"
         android:layout_width="match_parent"
@@ -55,5 +74,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_place_name" />
+        app:layout_constraintTop_toBottomOf="@+id/new_reason" />
 </androidx.constraintlayout.widget.ConstraintLayout>

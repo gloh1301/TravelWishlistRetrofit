@@ -27,6 +27,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/reason_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_spacing"
+        android:padding="@dimen/medium_spacing"
+        android:textAlignment="viewStart"
+        android:textColor="#004D40"
+        android:textSize="@dimen/medium_text_size"
+        app:layout_constraintBottom_toTopOf="@id/date_place_added"
+        app:layout_constraintEnd_toStartOf="@+id/map_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/place_name"
+        tools:text="Reason" />
+
+    <TextView
         android:id="@+id/date_place_added"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

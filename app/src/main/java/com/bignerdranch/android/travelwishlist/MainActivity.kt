@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
 
     private lateinit var newPlaceEditText: EditText
     private lateinit var addNewPlaceButton: Button
+    private lateinit var reasonEditText: EditText
     private lateinit var placeListRecyclerView: RecyclerView
 
     private lateinit var placesRecyclerAdapter: PlaceRecyclerAdapter
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         placeListRecyclerView = findViewById(R.id.place_list)
         addNewPlaceButton = findViewById(R.id.add_new_place_button)
         newPlaceEditText = findViewById(R.id.new_place_name)
+        reasonEditText = findViewById(R.id.new_reason)
 
         val places = placesViewModel.getPlaces()
 
@@ -50,12 +52,15 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
     }
     private fun addNewPlace() {
         val name = newPlaceEditText.text.toString().trim()
-        if (name.isEmpty()) {
-            Toast.makeText(this, "Enter a place name", Toast.LENGTH_SHORT).show()
+        val reason = reasonEditText.text.toString().trim()
+        if (name.isEmpty() && reason.isEmpty()) {
+            Toast.makeText(this, "Enter a place name and a reason", Toast.LENGTH_SHORT).show()
         } else {
             val newPlace = Place(name)
+            val newReason = Place(reason)
             val positionAdded = placesViewModel.addNewPlace(newPlace)
-            if (positionAdded == -1) {
+            val reasonPositionAdded = placesViewModel.addNewReason(newReason)
+            if (positionAdded == -1 && reasonPositionAdded == -1) {
                 Toast.makeText(this, "You already added that place", Toast.LENGTH_SHORT).show()
             } else {
                 placesRecyclerAdapter.notifyItemInserted(positionAdded)
@@ -67,6 +72,7 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
 
     private fun clearForm() {
         newPlaceEditText.text.clear()
+        reasonEditText.text.clear()
     }
 
     private fun hideKeyboard() {
@@ -97,6 +103,7 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
             .setBackgroundTint(resources.getColor(R.color.dark_grey))
             .setAction(getString(R.string.undo)) {
                 placesViewModel.addNewPlace(deletedPlace, position)
+                placesViewModel.addNewReason(deletedPlace, position)
                 placesRecyclerAdapter.notifyItemInserted(position)
             }
             .show()
