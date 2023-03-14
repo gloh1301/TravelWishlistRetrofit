@@ -56,11 +56,9 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         if (name.isEmpty() && reason.isEmpty()) {
             Toast.makeText(this, "Enter a place name and a reason", Toast.LENGTH_SHORT).show()
         } else {
-            val newPlace = Place(name)
-            val newReason = Place(reason)
+            val newPlace = Place(name, reason)
             val positionAdded = placesViewModel.addNewPlace(newPlace)
-            val reasonPositionAdded = placesViewModel.addNewReason(newReason)
-            if (positionAdded == -1 && reasonPositionAdded == -1) {
+            if (positionAdded == -1) {
                 Toast.makeText(this, "You already added that place", Toast.LENGTH_SHORT).show()
             } else {
                 placesRecyclerAdapter.notifyItemInserted(positionAdded)
