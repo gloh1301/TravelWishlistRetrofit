@@ -4,13 +4,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 interface OnDataChangedListener {
-    fun onListItemMoved(from: Int, to: Int)
+    // fun onListItemMoved(from: Int, to: Int)
     fun onListItemDeleted(position: Int)
 }
 
 class OnListItemSwipeListener(private val onDataChangedListener: OnDataChangedListener):
     ItemTouchHelper.SimpleCallback(
-    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+    0,
     ItemTouchHelper.RIGHT
 ) {
 
@@ -19,9 +19,6 @@ class OnListItemSwipeListener(private val onDataChangedListener: OnDataChangedLi
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        val fromPosition = viewHolder.adapterPosition
-        val toPosition = target.adapterPosition
-        onDataChangedListener.onListItemMoved(fromPosition, toPosition)
         return true
     }
 

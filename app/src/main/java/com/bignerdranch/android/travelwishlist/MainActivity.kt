@@ -80,22 +80,30 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         }
     }
 
-    override fun onListItemClicked(place: Place) {
+    override fun onMapRequestButtonClicked(place: Place) {
         // Toast.makeText(this, "${place.name} map icon was clicked", Toast.LENGTH_SHORT).show()
         val placeLocationUri = Uri.parse("geo:0,0?q=${place.name}")
         val mapIntent = Intent(Intent.ACTION_VIEW, placeLocationUri)
         startActivity(mapIntent)
     }
 
+    override fun onStarredStatusChanged(place: Place, isStarred: Boolean) {
+        place.starred = isStarred
+        placesViewModel.updatePlace(place)
+    }
+
+    /*
     override fun onListItemMoved(from: Int, to: Int) {
         placesViewModel.movePlace(from, to)
         placesRecyclerAdapter.notifyItemMoved(from, to)
     }
+    */
 
     override fun onListItemDeleted(position: Int) {
         val deletedPlace = placesViewModel.deletePlace(position)
         placesRecyclerAdapter.notifyItemRemoved(position)
 
+        /*
         Snackbar.make(findViewById(R.id.wishlist_container), getString(R.string.place_deleted, deletedPlace.name), Snackbar.LENGTH_LONG)
             .setActionTextColor(resources.getColor(R.color.red))
             .setBackgroundTint(resources.getColor(R.color.dark_grey))
@@ -105,5 +113,6 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
                 placesRecyclerAdapter.notifyItemInserted(position)
             }
             .show()
+         */
     }
 }

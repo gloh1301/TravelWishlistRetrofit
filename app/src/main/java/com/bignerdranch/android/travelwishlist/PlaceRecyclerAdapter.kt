@@ -3,12 +3,14 @@ package com.bignerdranch.android.travelwishlist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 interface OnListItemClickedListener {
-    fun onListItemClicked(places: Place)
+    fun onMapRequestButtonClicked(places: Place)
+    fun onStarredStatusChanged(place: Place, isStarred: Boolean)
 }
 
 class PlaceRecyclerAdapter(private val places: List<Place>,
@@ -24,13 +26,17 @@ class PlaceRecyclerAdapter(private val places: List<Place>,
             val reasonTextView: TextView = view.findViewById(R.id.reason_name)
             reasonTextView.text = place.reason
 
-            val dateCreatedOnTextView: TextView = view.findViewById(R.id.date_place_added)
-            val createdOnText = view.context.getString(R.string.created_on, place.formattedDate())
-            dateCreatedOnTextView.text = createdOnText
-
             val mapIcon: ImageView = view.findViewById(R.id.map_icon)
+
             mapIcon.setOnClickListener {
-                onListItemClickedListener.onListItemClicked(place)
+                onListItemClickedListener.onMapRequestButtonClicked(place)
+            }
+
+            val starCheck = view.findViewById<CheckBox>(R.id.star_check)
+            starCheck.setOnClickListener(null)
+            starCheck.isChecked = place.starred
+            starCheck.setOnClickListener {
+                onListItemClickedListener.onStarredStatusChanged(place, starCheck.isChecked)
             }
         }
     }
