@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
     private lateinit var addNewPlaceButton: Button
     private lateinit var reasonEditText: EditText
     private lateinit var placeListRecyclerView: RecyclerView
+    private lateinit var wishlistContainer: View
 
     private lateinit var placesRecyclerAdapter: PlaceRecyclerAdapter
 
@@ -36,10 +38,11 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         addNewPlaceButton = findViewById(R.id.add_new_place_button)
         newPlaceEditText = findViewById(R.id.new_place_name)
         reasonEditText = findViewById(R.id.new_reason)
+        wishlistContainer = findViewById(R.id.wishlist_container)
 
-        val places = placesViewModel.getPlaces()
+        // val places = placesViewModel.getPlaces()
 
-        placesRecyclerAdapter = PlaceRecyclerAdapter(places, this)
+        placesRecyclerAdapter = PlaceRecyclerAdapter(listOf(), this)
         placeListRecyclerView.layoutManager = LinearLayoutManager(this)
         placeListRecyclerView.adapter = placesRecyclerAdapter
 
@@ -48,6 +51,17 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
 
         addNewPlaceButton.setOnClickListener {
             addNewPlace()
+        }
+
+        placesViewModel.allPlaces.observe(this) { places ->
+            placesRecyclerAdapter.places = places
+            placesRecyclerAdapter.notifyDataSetChanged()
+        }
+
+        placesViewModel.userMessage.observe(this) { message ->
+            if (message != null) {
+                Snackbar.make(wishlistContainer, message, Snackbar.LENGTH_LONG).show()
+            }
         }
     }
     private fun addNewPlace() {
@@ -58,13 +72,14 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         } else {
             val newPlace = Place(name, reason)
             val positionAdded = placesViewModel.addNewPlace(newPlace)
+            /*
             if (positionAdded == -1) {
                 Toast.makeText(this, "You already added that place", Toast.LENGTH_SHORT).show()
-            } else {
-                placesRecyclerAdapter.notifyItemInserted(positionAdded)
+            } */ /* else {
+                placesRecyclerAdapter.notifyItemInserted(positionAdded) */
                 clearForm()
                 hideKeyboard()
-            }
+            /* } */
         }
     }
 
@@ -100,8 +115,10 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
     */
 
     override fun onListItemDeleted(position: Int) {
-        val deletedPlace = placesViewModel.deletePlace(position)
-        placesRecyclerAdapter.notifyItemRemoved(position)
+
+        val place = placesRecyclerAdapter.places[position]
+        placesViewModel.deletePlace(place)
+        // placesRecyclerAdapter.notifyItemRemoved(position)
 
         /*
         Snackbar.make(findViewById(R.id.wishlist_container), getString(R.string.place_deleted, deletedPlace.name), Snackbar.LENGTH_LONG)
